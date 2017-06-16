@@ -14,6 +14,9 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import static de.robv.android.xposed.XC_MethodReplacement.returnConstant;
 import static de.robv.android.xposed.XposedHelpers.setBooleanField;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RootDetectionBypass implements IXposedHookLoadPackage {
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
         if (lpparam.packageName.equals("com.nordea.mobiletoken")){
@@ -26,9 +29,22 @@ public class RootDetectionBypass implements IXposedHookLoadPackage {
                 findAndHookMethod("o.ˊ", lpparam.classLoader, "ˊ", new byte[0].getClass(), returnConstant(false));          // Check 5
                 findAndHookMethod("o.ˊ", lpparam.classLoader, "ˋ", returnConstant(false));                                  // Check 6
                 findAndHookMethod("o.ˊ", lpparam.classLoader, "ˋ", String.class, String.class, returnConstant(false));      // Check 7
+
                 Log.d("nordearootbypasser", "Bypassed Nordea Codes root detection!");
             } catch (Throwable t) {
                 log(t);
+
+                try{
+                    Log.d("nordearootbypasser", "Nordea Codes root bypass 1 failed, trying another one!");
+
+                    findAndHookMethod("util.m.e", lpparam.classLoader, "d", new byte[0].getClass(), List.class, returnConstant(new byte[] { 1, 0, 0 })); // Hook detection O_O
+
+                    findAndHookMethod("util.m.e", lpparam.classLoader, "d", new byte[0].getClass(), returnConstant(new byte[] { 1, 0, 0 })); // Root detection
+
+                    Log.d("nordearootbypasser", "Nordea Codes root bypass 2 succeeded!");
+                } catch (Throwable err) {
+                    log(err);
+                }
             }
         }
 
