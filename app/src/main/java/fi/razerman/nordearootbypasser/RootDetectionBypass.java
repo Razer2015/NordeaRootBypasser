@@ -38,7 +38,20 @@ public class RootDetectionBypass implements IXposedHookLoadPackage {
                 Log.d("nordearootbypasser", "Couldn't retrieve version.");
             }
 
-            if((versionCode / 100) >= 151){
+            if((versionCode / 100) >= 152){
+                try{
+                    Log.d("nordearootbypasser", "Starting to bypass Nordea Codes version 1.5.2 or higher.");
+
+                    findAndHookMethod("util.m.rd", lpparam.classLoader, "fh", new byte[0].getClass(), List.class, returnConstant(new byte[] { 1, 0, 0 })); // Hook detection O_O
+
+                    findAndHookMethod("util.m.rd", lpparam.classLoader, "xn", new byte[0].getClass(), returnConstant(new byte[] { 1, 0, 0 })); // Root detection
+
+                    Log.d("nordearootbypasser", "Nordea Codes root bypass succeeded!");
+                } catch (Throwable err) {
+                    log(err);
+                }
+            }
+            else if((versionCode / 100) >= 151){
                 try{
                     Log.d("nordearootbypasser", "Starting to bypass Nordea Codes version 1.5.1 or higher.");
 
