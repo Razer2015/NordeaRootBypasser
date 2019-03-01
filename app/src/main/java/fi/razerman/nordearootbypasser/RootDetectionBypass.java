@@ -17,6 +17,7 @@ import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 
+import android.os.Build;
 import android.util.Log;
 import java.util.List;
 
@@ -38,7 +39,26 @@ public class RootDetectionBypass implements IXposedHookLoadPackage {
                 Log.d("nordearootbypasser", "Couldn't retrieve version.");
             }
 
-            if((versionCode / 100) >= 152){
+            if((versionCode / 100) >= 162){
+                try{
+                    Log.d("nordearootbypasser", "Starting to bypass Nordea Codes version 1.6.2 or higher.");
+
+                    findAndHookMethod("o.mz", lpparam.classLoader, "ॱ", returnConstant(1)); // Root detection
+/*                    findAndHookMethod("o.ᕄ", lpparam.classLoader, "ʻ", Context.class, returnConstant(false)); // Root detection
+                    findAndHookMethod("o.ᕄ", lpparam.classLoader, "ᐝ", Context.class, returnConstant(false)); // Emulator detection
+                    findAndHookMethod("o.ᕄ", lpparam.classLoader, "ॱ", returnConstant(false)); // Debugger detection
+                    findAndHookMethod("o.ᕄ", lpparam.classLoader, "ʽ", Context.class, returnConstant(0)); // All of the above (state)
+
+                    findAndHookMethod("util.m.rd", lpparam.classLoader, "fh", new byte[0].getClass(), List.class, returnConstant(new byte[] { 1, 0, 0 })); // Hook detection O_O
+
+                    findAndHookMethod("util.m.rd", lpparam.classLoader, "xn", new byte[0].getClass(), returnConstant(new byte[] { 1, 0, 0 })); // Root detection
+*/
+                    Log.d("nordearootbypasser", "Nordea Codes root bypass succeeded!");
+                } catch (Throwable err) {
+                    log(err);
+                }
+            }
+            else if((versionCode / 100) >= 152){
                 try{
                     Log.d("nordearootbypasser", "Starting to bypass Nordea Codes version 1.5.2 or higher.");
 
